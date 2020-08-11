@@ -1,0 +1,72 @@
+
+<div class="container pt-3 pb-3">
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-success" (click)=getEmployeeData()>Read Table Data</button>
+    </div>
+    <div class="col">
+      <button class="btn btn-success" (click)=showDeleteAction()>Delete Table Data</button>
+    </div>
+    <div class="col">
+      <a class="btn btn-success" routerLink="/update-component">Put Table Data</a>
+    </div>
+    <div class="col">
+      <button class="btn btn-success" (click)=showPostModal()>Post Table Data</button>
+    </div>
+  </div>
+</div>
+
+
+<read-component [items]="empConfig" [loading]="isLoading" [isDeleteAllowed]="isDeleteAllowed"></read-component>
+
+<!-- post form start-->
+<div  *ngIf="showModal" class="col-md-4 card m-auto p-4">
+  <form #postForm = "ngForm" class="card-body">
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-5 col-form-label">First Name</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="first_name"  required name="first_name"
+        [(ngModel)]="model.first_name" required #first_name="ngModel">
+        <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)">
+          <small  class="text-danger"  *ngIf="first_name.errors.required">Field is required</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword" class="col-sm-5 col-form-label">Last Name</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="last_name"  required name="last_name" 
+        [(ngModel)]="model.last_name" #last_name="ngModel">
+        <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)">
+          <small  class="text-danger"  *ngIf="last_name.errors.required">Field is required</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-5 col-form-label">Email</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="email"  name="email"
+        [(ngModel)]="model.email">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-5 col-form-label">Gender</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="gender"  name="gender"
+        [(ngModel)]="model.gender" gender #gender_error="ngModel">
+     
+        <div *ngIf="gender_error.invalid && (gender_error.dirty || gender_error.touched)">
+          <small  class="text-danger"  *ngIf="gender_error.errors.genderError">Value must be MALE or FEMALE</small>
+        </div>
+        
+      </div>   
+    </div>
+
+    <button class="btn btn-success" (click)=postData(postForm) [disabled]="postForm.invalid">Submit</button>
+
+    
+  </form>
+</div>
+
+<!-- post form end -->
+<router-outlet></router-outlet>

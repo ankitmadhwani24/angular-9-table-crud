@@ -1,0 +1,57 @@
+<h3 *ngIf="loading" class="text-center">Loading Data</h3>
+
+<table class="table table-striped" *ngIf=" items">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Fullname</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th *ngIf="(isDeleteAllowed || isUpdate)">Action</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!isUpdate">      
+      <tr *ngFor = "let item of items">
+        <td (click)="deleteRouteNavigation(item)">{{item.first_name}}</td>
+        <td>{{item.last_name}}</td>
+        <td> <a routerLink="/delete-component" [queryParams]="{id:item.id, email:item.email}"> {{fullName(item)}} </a> </td>
+        <td>{{item.email}}</td>
+        <td>{{item.gender}}</td>
+
+        <td *ngIf="isDeleteAllowed"> <a class="color-danger" (click)=deleteRecord(item.id)> Delete</a> </td>
+        <td *ngIf="isUpdate"> <a class="text-warning"> Update</a> </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngIf="isUpdate" >      
+      <tr *ngFor="let item of items">
+        <td>
+          <form #putForm="ngForm">            
+            <span *ngIf="!item.isEditable">{{item.first_name}}</span>
+            <input *ngIf="item.isEditable" type="text" name="first_name" [(ngModel)]="item.first_name" class="form-control">
+          </form>
+        </td>
+        <td>
+          <form #putForm="ngForm">            
+            <span *ngIf="!item.isEditable">{{item.last_name}}</span>
+            <input *ngIf="item.isEditable" type="text" name="last_name" [(ngModel)]="item.last_name" class="form-control">
+          </form>          
+        </td>
+        <td>{{fullName(item)}}</td>
+        <td>          
+          <form #putForm="ngForm">            
+            <span *ngIf="!item.isEditable">{{item.email}}</span>
+            <input *ngIf="item.isEditable" type="text" name="email" [(ngModel)]="item.email" class="form-control">
+          </form>
+        </td>
+
+        <td>{{item.gender}}</td>
+
+        <td> <a class="text-warning" (click)='editRow(item)'> Update</a> </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <router-outlet></router-outlet>
+  <!-- {{items | json}} -->
